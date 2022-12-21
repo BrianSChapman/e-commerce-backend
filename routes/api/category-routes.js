@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 // Find one category by ID value.
 router.get("/:id", async (req, res) => {
   try {
-    const categoryId = await Category.findOne({ 
+    const categoryId = await Category.findOne({
       where: { id: req.params.id },
       include: [{ model: Product }],
     });
@@ -45,23 +45,26 @@ router.post("/", async (req, res) => {
 
 // Update an existing category
 router.put("/:id", async (req, res) => {
- try {
+  try {
     const updatedCategory = await Category.update(
-      { name: req.body.name },
-      {where: {
-          id: req.params.id
-        }
-      })
-        if(!updatedCategory) {
-          res.status(404).json({ message: "Category not found" });
-          return;
-        }
-        res.json(updatedCategory);
-      } catch (err) {
-        res.status(400).json(err);
+      { 
+        category_name: req.body.category_name },
+      {
+        where: {
+          id: req.params.id,
+        },
       }
-    });
-  
+    );
+    if (!updatedCategory) {
+      res.status(404).json({ message: "Category not found" });
+      return;
+    }
+    res.json(updatedCategory);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 //Delete a category by its `id` value
 router.delete("/:id", async (req, res) => {
   try {
